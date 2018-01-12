@@ -65,12 +65,19 @@ global party2;
 global party3;
 global party4;
 global party5;
+global voters_name;
+global voters_id;
 
 party1 = 0;
 party2 = 0;
 party3 = 0;
 party4 = 0;
 party5 = 0;
+% Open Voter ID List File
+filename = 'VotingList.xlsx';
+[~, ~, raw] = xlsread(filename);
+voters_name = raw(2:end, 2);
+voters_id = raw(2:end, 3);
 
 % --- Outputs from this function are returned to the command line.
 function varargout = VotingGUI_OutputFcn(hObject, eventdata, handles) 
@@ -89,7 +96,23 @@ function pushbtn_party1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global party1;
-party1 = party1+1;
+global voters_name
+global voters_id
+
+prompt = {'Enter your Voter ID ?'};
+dlg_title = 'Input';
+num_lines = 1;
+defaultans = {'1234567890'};
+answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+index = find([voters_id{:}] == str2double(answer));
+if index
+  %disp (voters_name(index));
+  name = string(voters_name(index));
+  party1 = party1+1;
+  msgbox(sprintf('Thank you "%s" for voting',name),'Vote Success')
+else
+  errordlg('User Not Found','Database Error');
+end
 
 % --- Executes on button press in pushbtn_party2.
 function pushbtn_party2_Callback(hObject, eventdata, handles)
@@ -97,7 +120,23 @@ function pushbtn_party2_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global party2;
-party2 = party2+1;
+global voters_name
+global voters_id
+
+prompt = {'Enter your Voter ID ?'};
+dlg_title = 'Input';
+num_lines = 1;
+defaultans = {'1234567890'};
+answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+index = find([voters_id{:}] == str2double(answer));
+if index
+  %disp (voters_name(index));
+  name = string(voters_name(index));
+  party2 = party2+1;
+  msgbox(sprintf('Thank you "%s" for voting',name),'Vote Success')
+else
+  errordlg('User Not Found','Database Error');
+end
 
 
 % --- Executes on button press in pushbtn_party3.
@@ -106,7 +145,23 @@ function pushbtn_party3_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global party3;
-party3 = party3+1;
+global voters_name
+global voters_id
+
+prompt = {'Enter your Voter ID ?'};
+dlg_title = 'Input';
+num_lines = 1;
+defaultans = {'1234567890'};
+answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+index = find([voters_id{:}] == str2double(answer));
+if index
+  %disp (voters_name(index));
+  name = string(voters_name(index));
+  party3 = party3+1;
+  msgbox(sprintf('Thank you "%s" for voting',name),'Vote Success')
+else
+  errordlg('User Not Found','Database Error');
+end
 
 
 % --- Executes on button press in pushbtn_party4.
@@ -115,7 +170,23 @@ function pushbtn_party4_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global party4;
-party4 = party4+1;
+global voters_name
+global voters_id
+
+prompt = {'Enter your Voter ID ?'};
+dlg_title = 'Input';
+num_lines = 1;
+defaultans = {'1234567890'};
+answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+index = find([voters_id{:}] == str2double(answer));
+if index
+  %disp (voters_name(index));
+  name = string(voters_name(index));
+  party4 = party4+1;
+  msgbox(sprintf('Thank you "%s" for voting',name),'Vote Success')
+else
+  errordlg('User Not Found','Database Error');
+end
 
 
 % --- Executes on button press in pushbtn_party5.
@@ -124,7 +195,23 @@ function pushbtn_party5_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global party5;
-party5 = party5+1;
+global voters_name
+global voters_id
+
+prompt = {'Enter your Voter ID ?'};
+dlg_title = 'Input';
+num_lines = 1;
+defaultans = {'1234567890'};
+answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+index = find([voters_id{:}] == str2double(answer));
+if index
+  %disp (voters_name(index));
+  name = string(voters_name(index));
+  party5 = party5+1;
+  msgbox(sprintf('Thank you "%s" for voting',name),'Vote Success')
+else
+  errordlg('User Not Found','Database Error');
+end
 
 % --- Executes on button press in pushbtn_results.
 function pushbtn_results_Callback(hObject, eventdata, handles)
