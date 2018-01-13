@@ -22,7 +22,7 @@ function varargout = VotingGUI(varargin)
 
 % Edit the above text to modify the response to help VotingGUI
 
-% Last Modified by GUIDE v2.5 11-Jul-2017 22:43:35
+% Last Modified by GUIDE v2.5 13-Jan-2018 12:43:06
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -67,6 +67,7 @@ global party4;
 global party5;
 global voters_name;
 global voters_id;
+global voting_status;
 
 party1 = 0;
 party2 = 0;
@@ -78,6 +79,8 @@ filename = 'VotingList.xlsx';
 [~, ~, raw] = xlsread(filename);
 voters_name = raw(2:end, 2);
 voters_id = raw(2:end, 3);
+% Create voting status variable to keep track of person's who already voted
+voting_status = zeros(numel(voters_name), 1);
 
 % --- Outputs from this function are returned to the command line.
 function varargout = VotingGUI_OutputFcn(hObject, eventdata, handles) 
@@ -98,6 +101,7 @@ function pushbtn_party1_Callback(hObject, eventdata, handles)
 global party1;
 global voters_name
 global voters_id
+global voting_status
 
 prompt = {'Enter your Voter ID ?'};
 dlg_title = 'Input';
@@ -108,8 +112,14 @@ index = find([voters_id{:}] == str2double(answer));
 if index
   %disp (voters_name(index));
   name = string(voters_name(index));
-  party1 = party1+1;
-  msgbox(sprintf('Thank you "%s" for voting',name),'Vote Success')
+  if voting_status(index) == 0
+    party1 = party1+1;
+    % Voting Done
+    voting_status(index) = 1;
+    msgbox(sprintf('Thank you "%s" for voting',name),'Vote Success')
+  else
+    msgbox(sprintf('"%s" you cant give vote multiple times', name),'Duplicate')
+  end
 else
   errordlg('User Not Found','Database Error');
 end
@@ -122,6 +132,7 @@ function pushbtn_party2_Callback(hObject, eventdata, handles)
 global party2;
 global voters_name
 global voters_id
+global voting_status
 
 prompt = {'Enter your Voter ID ?'};
 dlg_title = 'Input';
@@ -132,8 +143,14 @@ index = find([voters_id{:}] == str2double(answer));
 if index
   %disp (voters_name(index));
   name = string(voters_name(index));
-  party2 = party2+1;
-  msgbox(sprintf('Thank you "%s" for voting',name),'Vote Success')
+  if voting_status(index) == 0
+    party2 = party2+1;
+    % Voting Done
+    voting_status(index) = 1;
+    msgbox(sprintf('Thank you "%s" for voting',name),'Vote Success')
+  else
+    msgbox(sprintf('"%s" you cant give vote multiple times', name),'Duplicate')
+  end
 else
   errordlg('User Not Found','Database Error');
 end
@@ -147,6 +164,7 @@ function pushbtn_party3_Callback(hObject, eventdata, handles)
 global party3;
 global voters_name
 global voters_id
+global voting_status
 
 prompt = {'Enter your Voter ID ?'};
 dlg_title = 'Input';
@@ -157,8 +175,14 @@ index = find([voters_id{:}] == str2double(answer));
 if index
   %disp (voters_name(index));
   name = string(voters_name(index));
-  party3 = party3+1;
-  msgbox(sprintf('Thank you "%s" for voting',name),'Vote Success')
+  if voting_status(index) == 0
+    party3 = party3+1;
+    % Voting Done
+    voting_status(index) = 1;
+    msgbox(sprintf('Thank you "%s" for voting',name),'Vote Success')
+  else
+    msgbox(sprintf('"%s" you cant give vote multiple times', name),'Duplicate')
+  end
 else
   errordlg('User Not Found','Database Error');
 end
@@ -172,6 +196,7 @@ function pushbtn_party4_Callback(hObject, eventdata, handles)
 global party4;
 global voters_name
 global voters_id
+global voting_status
 
 prompt = {'Enter your Voter ID ?'};
 dlg_title = 'Input';
@@ -182,12 +207,17 @@ index = find([voters_id{:}] == str2double(answer));
 if index
   %disp (voters_name(index));
   name = string(voters_name(index));
-  party4 = party4+1;
-  msgbox(sprintf('Thank you "%s" for voting',name),'Vote Success')
+  if voting_status(index) == 0
+    party4 = party4+1;
+    % Voting Done
+    voting_status(index) = 1;
+    msgbox(sprintf('Thank you "%s" for voting',name),'Vote Success')
+  else
+    msgbox(sprintf('"%s" you cant give vote multiple times', name),'Duplicate')
+  end
 else
   errordlg('User Not Found','Database Error');
 end
-
 
 % --- Executes on button press in pushbtn_party5.
 function pushbtn_party5_Callback(hObject, eventdata, handles)
@@ -197,6 +227,7 @@ function pushbtn_party5_Callback(hObject, eventdata, handles)
 global party5;
 global voters_name
 global voters_id
+global voting_status
 
 prompt = {'Enter your Voter ID ?'};
 dlg_title = 'Input';
@@ -207,11 +238,18 @@ index = find([voters_id{:}] == str2double(answer));
 if index
   %disp (voters_name(index));
   name = string(voters_name(index));
-  party5 = party5+1;
-  msgbox(sprintf('Thank you "%s" for voting',name),'Vote Success')
+  if voting_status(index) == 0
+    party5 = party5+1;
+    % Voting Done
+    voting_status(index) = 1;
+    msgbox(sprintf('Thank you "%s" for voting',name),'Vote Success')
+  else
+    msgbox(sprintf('"%s" you cant give vote multiple times', name),'Duplicate')
+  end
 else
   errordlg('User Not Found','Database Error');
 end
+
 
 % --- Executes on button press in pushbtn_results.
 function pushbtn_results_Callback(hObject, eventdata, handles)
@@ -223,8 +261,10 @@ global party2;
 global party3;
 global party4;
 global party5;
+global voting_status;
 
 total_votes = party1+party2+party3+party4+party5;
+total_popu = numel(voting_status);
 
 set(handles.text_party1_votes, 'String', party1);
 set(handles.text_party2_votes, 'String', party2);
@@ -237,8 +277,8 @@ set(handles.text_party2_votes_per, 'String', party2*100/total_votes);
 set(handles.text_party3_votes_per, 'String', party3*100/total_votes);
 set(handles.text_party4_votes_per, 'String', party4*100/total_votes);
 set(handles.text_party5_votes_per, 'String', party5*100/total_votes);
-
-set(handles.text_total_votes,  'String', total_votes);
+set(handles.text_vote_percent,     'String', total_votes*100/total_popu);
+set(handles.text_total_votes,      'String', total_votes);
 
 
 % --- Executes on button press in pushbutton_reset.
@@ -251,10 +291,24 @@ global party2;
 global party3;
 global party4;
 global party5;
+global voting_status;
 
 party1 = 0;
 party2 = 0;
 party3 = 0;
 party4 = 0;
 party5 = 0;
+voting_status(1:end) = 0;
+set(handles.text_party1_votes, 'String', party1);
+set(handles.text_party2_votes, 'String', party2);
+set(handles.text_party3_votes, 'String', party3);
+set(handles.text_party4_votes, 'String', party4);
+set(handles.text_party5_votes, 'String', party5);
+set(handles.text_party1_votes_per, 'String', 0);
+set(handles.text_party2_votes_per, 'String', 0);
+set(handles.text_party3_votes_per, 'String', 0);
+set(handles.text_party4_votes_per, 'String', 0);
+set(handles.text_party5_votes_per, 'String', 0);
+set(handles.text_vote_percent,     'String', 0);
+set(handles.text_total_votes,      'String', 0);
 
